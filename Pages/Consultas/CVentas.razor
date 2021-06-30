@@ -14,10 +14,9 @@
             <div class="col form-group">
                 <label>Filtrar por:</label>
                 <select @bind="Index" class="custom-select">
-                    <option value="-1" disabled>Seleccionar opción</option>
-                    <option value="0">Todo</option>
-                    <option value="1">Venta Id</option>
-                    <option value="2">Cliente Id</option>
+                    <option value="1">Todo</option>
+                    <option value="2">Venta Id</option>
+                    <option value="3">Cliente Id</option>
                 </select>
             </div>
 
@@ -25,7 +24,7 @@
             <div class="col form-group">
                 <label>Criterio:</label>
                 <div class="input-group">
-                    <input class="form-control" type="@(Index == 1 || Index == 2 ? "number" : "text")" @bind-value="Criterio" placeholder="Ingrese el criterio a filtrar para obtener la venta deseada" />
+                    <input class="form-control" type="@(Index == 1 || Index == 2 ? "number" : "text")" @bind-value="Criterio" placeholder="Informacion para realizar Filtro" />
                     <div class="input-group-append">
                         <button class="btn btn-primary" @onclick="Buscar">
                             <i class="oi oi-magnifying-glass" />
