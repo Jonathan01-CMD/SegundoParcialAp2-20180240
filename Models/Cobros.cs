@@ -12,7 +12,6 @@ namespace SegundoParcialAp2_20180240.Models
         [Key]
         public int CobroId { get; set; }
         public DateTime Fecha { get; set; }
-
         public int ClienteId { get; set; }
         public Clientes Cliente { get; set; }
 
