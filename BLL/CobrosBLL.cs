@@ -18,7 +18,6 @@ namespace SegundoParcialAp2_20180240.BLL
             else
                 return Modificar(cobros);
         }
-
         private static bool Existe(int id)
         {
             Contexto contexto = new Contexto();
