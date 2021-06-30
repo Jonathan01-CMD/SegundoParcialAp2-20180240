@@ -18,6 +18,7 @@ namespace SegundoParcialAp2_20180240.BLL
             else
                 return Modificar(ventas);
         }
+
         private static bool Existe(int id)
         {
             bool paso = false;
