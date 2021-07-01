@@ -92,7 +92,7 @@
 
 @code {
 
-    public int Index = -1;
+    public int Index = 0;
     public double TotalCobrado;
     public string Criterio;
     List<Cobros> ListaCobros = new List<Cobros>();
@@ -109,23 +109,22 @@
 
     void Buscar()
     {
-        if (Index == 0)
+        if (Index == 1)
         {
             ListaCobros = CobrosBLL.GetList(p => true).ToList();
         }
-        else if (Index == 1)
+        else if (Index == 2)
         {
 
             ListaCobros = CobrosBLL.GetList(p => p.CobroId == int.Parse(Criterio)).ToList();
 
         }
-        else if (Index == 2)
+        else if (Index == 3)
         {
             ListaCobros = CobrosBLL.GetList(p => p.ClienteId == int.Parse(Criterio)).ToList();
         }
 
     }
-
 
     private void Eliminar(int id)
     {
