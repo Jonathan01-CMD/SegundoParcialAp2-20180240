@@ -3,7 +3,7 @@
 @inject IToastService toast
 
 <div class="card accordion">
-    <div class="card-header" style="background: #324A5F">
+    <div class="card-header" style="background: #808080">
         <h1 style="color:white">Consulta de Cobros</h1>
     </div>
 
@@ -38,7 +38,7 @@
         @if (ListaCobros == null)
         {
             <div class="form-group">
-                <h2>No Posee datos... Agrega Cobros.</h2>
+                <h2>Tiene que agregar un cobro</h2>
             </div>
         }
         else
@@ -102,6 +102,7 @@
     {
         Actualizar();
     }
+
     public void Actualizar()
     {
         ListaCobros = CobrosBLL.GetList(e => true);
@@ -131,7 +132,7 @@
         bool Paso;
 
 
-        Paso = VentasBLL.Eliminar(id);
+        Paso = CobrosBLL.Eliminar(id);
 
         if (Paso)
         {
