@@ -46,6 +46,13 @@ namespace SegundoParcialAp2_20180240.BLL
 
             try
             {
+                foreach (var item in cobros.Detalle)
+                {
+                    item.Venta = contexto.Ventas.Find(item.VentaId);
+                    item.Venta.Balance -= item.Cobrado;
+                    contexto.Entry(item.Venta).State = EntityState.Modified;
+                }
+
                 contexto.Cobros.Add(cobros);
                 paso = contexto.SaveChanges() > 0;
             }
@@ -74,7 +81,6 @@ namespace SegundoParcialAp2_20180240.BLL
                 {
                     contexto.Entry(item).State = EntityState.Added;
                 }
-
                 contexto.Entry(cobros).State = EntityState.Modified;
                 paso = contexto.SaveChanges() > 0;
             }
