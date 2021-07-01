@@ -25,8 +25,6 @@
                     </div>
                 </div>
 
-
-
                 @*Fecha*@
                 <div class="col form-group">
                     <label>Fecha:</label>
@@ -38,7 +36,7 @@
             @*Cliente*@
             <div class="form-group">
                 <label>Cliente:</label>
-                <InputSelect @bind-Value="Cobro.ClienteId" class="form-control">
+                <InputSelect @bind-Value="Cobro.ClienteId" class="form-control" @onclick="CobrosPorRealizar">
                     <option value="0" disabled selected>Seleccionar Cliente</option>
                     @foreach (var item in ListaClientes)
                     {
@@ -73,13 +71,13 @@
                                 <td>@item.Venta.Monto</td>
                                 <td>@item.Venta.Balance</td>
                                 <td>@item.Cobrado</td>
-                                <th><input type="checkbox" /></th>
-
+                                <th><input type="checkbox" @onchange="@(() => Cobrar(item))" /></th>
                             </tr>
                         }
                     </tbody>
                 </table>
-
+            </div>
+            <div class="form-group">
                 <div class="row align-items-center">
                     <div class="col">
                         <div class="form-group row m-1">
@@ -101,10 +99,13 @@
                         </div>
                     </div>
                 </div>
+                <div class="border-info">
+                    <h5>Observaciones</h5>
+                    <InputTextArea @bind-Value="Cobro.Observaciones" class="form-control" />
+                </div>
             </div>
 
             @*Botones*@
-
             <div class="card-footer">
                 <div class="form-group text-center" display: inline-block>
 
@@ -119,7 +120,6 @@
                     <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar">
                         <i class="oi oi-trash mr-2" />Eliminar
                     </button>
-
                 </div>
             </div>
         </div>
@@ -131,6 +131,7 @@
     public int CobroId { get; set; }
     Cobros Cobro = new Cobros();
     List<Clientes> ListaClientes = new List<Clientes>();
+    int VecesSeleccionado = 0;
 
     protected override void OnInitialized()
     {
@@ -152,12 +153,13 @@
                 this.Cobro = encontrado;
             else
             {
-                Toast.ShowWarning("No se encuentran Cobros!");
+                Toast.ShowWarning("No han se encuentran Cobros");
                 Nuevo();
             }
         }
 
     }
+
     public void Eliminar()
     {
         bool eliminar;
@@ -166,12 +168,13 @@
 
         if (eliminar)
         {
-            Nuevo();
             Toast.ShowSuccess("Orden eliminada");
+            Nuevo();
         }
         else
             Toast.ShowError("Orden no Eliminada");
     }
+
     public void Guardar()
     {
         bool guardado;
@@ -183,13 +186,35 @@
 
             if (guardado)
             {
-                Toast.ShowSuccess("Transacción exitosa!");
+                Toast.ShowSuccess("Cobro realizado");
                 Nuevo();
             }
             else
             {
-                Toast.ShowError("Transacción fallida!");
+                Toast.ShowError("No se pudo reslizar ningun cobro");
             }
         }
+    }
+    public void Cobrar(CobrosDetalle cobrosDetalle)
+    {
+        if (cobrosDetalle.Cobrado == 0)
+        {
+            cobrosDetalle.Cobrado = cobrosDetalle.Venta.Balance;
+            Cobro.TotalCobro += cobrosDetalle.Cobrado;
+            Cobro.Totales++;
+        }
+        else
+        {
+            cobrosDetalle.Cobrado = 0;
+            Cobro.TotalCobro -= cobrosDetalle.Venta.Balance;
+            Cobro.Totales--;
+        }
+    }
+    public void CobrosPorRealizar()
+    {
+        if (Cobro.ClienteId == 0)
+            return;
+
+        Cobro.Detalle = VentasBLL.ObetenerVentasPendientes(Cobro.ClienteId);
     }
 }
